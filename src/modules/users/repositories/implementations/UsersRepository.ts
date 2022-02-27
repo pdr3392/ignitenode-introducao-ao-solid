@@ -21,10 +21,6 @@ class UsersRepository implements IUsersRepository {
   create({ name, email }: ICreateUserDTO): User {
     const user = new User();
 
-    if (this.findByEmail(email)) {
-      throw new Error(`Email ${email} already taken`);
-    }
-
     Object.assign(user, { name, email });
 
     this.users.push(user);
@@ -53,9 +49,9 @@ class UsersRepository implements IUsersRepository {
   }
 
   turnAdmin(receivedUser: User): User {
-    const { email } = receivedUser;
+    const { id } = receivedUser;
 
-    const userToChange = this.findByEmail(email);
+    const userToChange = this.findById(id);
 
     if (!userToChange) {
       throw new Error("User not found");
